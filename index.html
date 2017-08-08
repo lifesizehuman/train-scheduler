@@ -1,12 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Train Scheduler</title>
-	  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-	   <script src="https://code.jquery.com/jquery.js"></script>
-	   <link rel="stylesheet" type="text/css" href="style/style.css">
+    <title>Train Scheduler</title>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
+
 <body>
-<script src="js/logic.js"></script>
+    <div class="container">
+
+    <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><strong>Current Trains</strong></h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-hover" id='employee-table'>
+                <thead>
+                  <tr>
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>Frequency (Min)</th>
+                    <th>Next Arrival</th>
+                    <th>Minutes Away</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add Train</h3>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Sign-up Form (note the various input "types")-->
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="name-input">Train Name</label>
+                                <input class="form-control" id="name-input" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-input">Destination</label>
+                                <input class="form-control" id="email-input" type="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="age-input">First Train Time (HH:mm - Military Time)</label>
+                                <input class="form-control" id="age-input" type="number">
+                            </div>
+                            <div class="form-group">
+                                <label for="comment-input">Frequency (Min)</label>
+                                <textarea class="form-control" rows="5" id="comment-input"></textarea>
+                            </div>
+                            <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+ 
+ 
+    <script src="js/logic.js"></script>
 </body>
+
 </html>
