@@ -46,7 +46,7 @@ $(document).ready(function() {
         var differenceTime = moment().diff(moment(convertedTime), "minutes");
         var remainderTime = differenceTime % trainFrequency;
         var minutesAway = trainFrequency - remainderTime;
-        var nextArrival = moment().add(minutesAway, "minutes");
+        var nextArrival = moment(currentTime).add(minutesAway, "minutes");
 
         $("#train-table > tbody").append(
             "<tr><td>" + trainName +
