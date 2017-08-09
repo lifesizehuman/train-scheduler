@@ -28,6 +28,11 @@ $(document).ready(function() {
 
         })
 
+        $('#train-input').val("");
+        $('#destination-input').val("");
+        $('#time-input').val("");
+        $('#frequency-input').val("");
+
     })
 
     database.ref().on("child_added", function(childSnapshot, prevChildKey) {
