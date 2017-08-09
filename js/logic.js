@@ -33,20 +33,19 @@
         $('#frequency-input').val("");
     })
 
+    var currentTime = moment();
+        var convertedTime = moment(currentTime, "hh:mm").subtract(1, "years");
+        var differenceTime = moment().diff(moment(convertedTime), "minutes");
+        var remainderTime = differenceTime % trainFrequency;
+        var minutesAway = trainFrequency - remainderTime;
+        var nextArrival = moment().add(minutesAway, "minutes");
+
     database.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
         var trainName = childSnapshot.val().name;
         var trainDestination = childSnapshot.val().destination;
         var trainTime = childSnapshot.val().time;
         var trainFrequency = childSnapshot.val().frequency;
-
-//taken from train scheduler activity from class
-        var currentTime = moment();
-        var convertedTime = moment(currentTime, "hh:mm").subtract(1, "years");
-        var differenceTime = moment().diff(moment(convertedTime), "minutes");
-        var remainderTime = differenceTime % trainFrequency;
-        var minutesAway = trainFrequency - remainderTime;
-        var nextArrival = moment().add(minutesAway, "minutes");
 
         $("#train-table > tbody").append(
             "<tr><td>" + trainName +
