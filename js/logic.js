@@ -40,6 +40,7 @@ $(document).ready(function() {
         var trainTime = childSnapshot.val().time;
         var trainFrequency = childSnapshot.val().frequency;
 
+//taken from train scheduler activity from class
         var currentTime = moment();
         var convertedTime = moment(currentTime, "hh:mm").subtract(1, "years");
         var differenceTime = moment().diff(moment(convertedTime), "minutes");
