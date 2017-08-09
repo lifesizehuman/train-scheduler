@@ -1,4 +1,4 @@
-$(document).ready(function() {
+
 
     var config = {
         apiKey: "AIzaSyCCFTtP84qjShv7EzKpmVSSLarJoDa_mc4",
@@ -56,4 +56,3 @@ $(document).ready(function() {
             "</td><td>" + minutesAway +
             "</td></tr>");
     })
-})
