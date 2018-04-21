@@ -32,34 +32,53 @@ $('#add-train').on('click', function(event) {
     $('#frequency-input').val("");
 })
 
-database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+database.ref().limitToLast(5).on("child_added", function(childSnapshot, prevChildKey) {
 
     var trainName = childSnapshot.val().name;
     var trainDestination = childSnapshot.val().destination;
-    var trainTime = moment(childSnapshot.val().time, "HH:mm");
+    var trainTime = moment(childSnapshot.val().time, "HH:mm a");
     var trainFrequency = childSnapshot.val().frequency;
 
     var currentTime = moment();
-
+    var firstArrivalTime = moment(childSnapshot.val().time, "HH:mm a");
+    
     var currentMinutes = ((currentTime.hour() * 60) + currentTime.minutes());
     var trainMinutes = ((trainTime.hour() * 60) + trainTime.minutes());
 
     var differenceMinutes = (currentMinutes - trainMinutes);
     var remainderTime = differenceMinutes % trainFrequency;
-    var minutesAway = trainFrequency - remainderTime;
+    var minutesAway = trainFrequency - remainderTime ;
     var nextArrival = moment(currentTime).add(minutesAway, "minutes");
 
-    //   console.log(currentMinutes);
-    //   console.log(trainMinutes);
+    changeArrival = () => {
+        if (nextArrival > firstArrivalTime) {
+           console.log(nextArrival.format("hh:mm a"));
+           return nextArrival.format('hh:mm a');
+        } else {
+          return firstArrivalTime.format('hh:mm a'); 
+        }
+    }
 
-    // console.log(trainTime);
-    // console.log(differenceMinutes);
+    changeMinutes = () => {
+        if (nextArrival < firstArrivalTime) {
+            return (parseInt(minutesAway) + parseInt(trainFrequency));
+        } else {
+            return minutesAway;
+        }
+    }
 
-    $("#train-table > tbody").append(
+    console.log('First Arrival Time: ' + firstArrivalTime);
+     console.log("Train Frequency: " + trainFrequency);
+     console.log("Minutes Away: " + minutesAway); 
+    
+
+
+    $("#train-table > tbody").prepend(
         "<tr><td>" + trainName +
         "</td><td>" + trainDestination +
         "</td><td>" + trainFrequency +
-        "</td><td>" + nextArrival.format("hh:mm") +
-        "</td><td>" + minutesAway +
+        "</td><td>" + firstArrivalTime.format('hh:mm a') +
+        "</td><td>" + changeArrival() +
+        "</td><td>" + changeMinutes() +
         "</td></tr>");
 })
