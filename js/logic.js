@@ -1,4 +1,3 @@
-
 var config = {
     apiKey: "AIzaSyCCFTtP84qjShv7EzKpmVSSLarJoDa_mc4",
     authDomain: "train-scheduler-5cc49.firebaseapp.com",
@@ -11,12 +10,12 @@ firebase.initializeApp(config);
 
 database = firebase.database();
 
-$('#add-train').on('click', function(event) {
+$('#add-train').on('click', function (event) {
     event.preventDefault();
 
     var name = $('#train-input').val().trim();
     var destination = $('#destination-input').val().trim();
-    var time = $('#time-input').val().trim();
+    var time = $("#time-input").val().trim();
     var frequency = $('#frequency-input').val().trim();
 
     database.ref().push({
@@ -32,53 +31,47 @@ $('#add-train').on('click', function(event) {
     $('#frequency-input').val("");
 })
 
-database.ref().limitToLast(5).on("child_added", function(childSnapshot, prevChildKey) {
+database.ref().limitToLast(5).on("child_added", function (childSnapshot, prevChildKey) {
 
     var trainName = childSnapshot.val().name;
     var trainDestination = childSnapshot.val().destination;
-    var trainTime = moment(childSnapshot.val().time, "HH:mm a");
     var trainFrequency = childSnapshot.val().frequency;
+    var firstArrivalTime = moment(childSnapshot.val().time, 'hh:mm a');
 
-    var currentTime = moment();
-    var firstArrivalTime = moment(childSnapshot.val().time, "HH:mm a");
-    
-    var currentMinutes = ((currentTime.hour() * 60) + currentTime.minutes());
-    var trainMinutes = ((trainTime.hour() * 60) + trainTime.minutes());
+    var remainderTime = moment().diff(firstArrivalTime, 'minutes') % trainFrequency;
+    var minutesAway = trainFrequency - remainderTime;
 
-    var differenceMinutes = (currentMinutes - trainMinutes);
-    var remainderTime = differenceMinutes % trainFrequency;
-    var minutesAway = trainFrequency - remainderTime ;
-    var nextArrival = moment(currentTime).add(minutesAway, "minutes");
 
-    changeArrival = () => {
-        if (nextArrival > firstArrivalTime) {
-           console.log(nextArrival.format("hh:mm a"));
-           return nextArrival.format('hh:mm a');
+    nextArrival = () => {
+        if (firstArrivalTime <= moment()) {
+            console.log('first time <= moment')
+            return moment().add(minutesAway, 'm').format("hh:mm a");
         } else {
-          return firstArrivalTime.format('hh:mm a'); 
-        }
-    }
-
-    changeMinutes = () => {
-        if (nextArrival < firstArrivalTime) {
-            return (parseInt(minutesAway) + parseInt(trainFrequency));
-        } else {
-            return minutesAway;
+            console.log('first time > moment')
+            return firstArrivalTime.format('hh:mm a');
         }
     }
 
     console.log('First Arrival Time: ' + firstArrivalTime);
-     console.log("Train Frequency: " + trainFrequency);
-     console.log("Minutes Away: " + minutesAway); 
-    
+    console.log("Train Frequency: " + trainFrequency);
+    console.log("Minutes Away: " + minutesAway);
 
+
+    var currentTime = moment().format('HH:mm');
+    document.getElementById('currentTime').innerHTML = currentTime;
 
     $("#train-table > tbody").prepend(
         "<tr><td>" + trainName +
         "</td><td>" + trainDestination +
         "</td><td>" + trainFrequency +
         "</td><td>" + firstArrivalTime.format('hh:mm a') +
-        "</td><td>" + changeArrival() +
-        "</td><td>" + changeMinutes() +
+        "</td><td>" + nextArrival() +
+        "</td><td>" + minutesAway +
         "</td></tr>");
-})
+});
+
+addCurrentTime = () => {
+    var currentTime = moment().format('h:mm:ss a');
+    document.getElementById('currentTime').innerHTML = currentTime;
+
+}
